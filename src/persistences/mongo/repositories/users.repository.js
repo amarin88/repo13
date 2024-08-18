@@ -13,12 +13,12 @@ const getById = async ( id ) =>{
 const getByEmail = async (email ) => {
     const user = await userModel.findOne( { email });
     return user;
-};//Función asincrona que recibe un email, busca el user que contenga ese email  y lo retorna
+};//Función asincrona que recibe un email, busca el user que contenga ese email y lo retorna
 
 const create = async (data) =>{
     const user = await userModel.create(data);
     return user;
-};//Función asincrona que recibe la data que contendrá el usero y devuelve el usero creado
+};//Función asincrona que recibe la data que contendrá el usero y devuelve el user creado
 
 const update = async (id, data) =>{
     const user = await userModel.findByIdAndUpdate(id, data, {new: true});

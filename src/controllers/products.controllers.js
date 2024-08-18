@@ -27,7 +27,7 @@ const getAll = async (req, res, next) => {
   
       res.status(200).json({ status: "success", payload: products });//Responde con los productos obtenidos
     } catch (error) {
-      next(error);//Continua el flujo al middleware de errors      });
+      next(error);//Continua el flujo al middleware de errors
     }
   };
 
@@ -44,11 +44,11 @@ const getById = async (req, res, next) => {
 const create = async (req, res, next) => {
     try {
       const product = req.body;//Obtiene el body de la request que contiene los datos del producto
-      const newProduct = await productsServices.create(product);//Agrega el nuevo producto a la base de datos
+      const newProduct = await productsServices.create(product, req.user);//Agrega el nuevo producto a la base de datos junto con la información del user
   
       res.status(201).json({ status: "success", payload: product });//Responde con el nuevo producto creado
     } catch (error) {
-      next(error);//Continua el flujo al middleware de errors      });
+      next(error);//Continua el flujo al middleware de errors
     }
   };
 
@@ -60,20 +60,20 @@ const update = async (req, res, next) => {
   
       res.status(200).json({ status: "success", payload: updateProduct });//Responde con el producto actualizado
     } catch (error) {
-      next(error);//Continua el flujo al middleware de errors      });
+      next(error);//Continua el flujo al middleware de errors
     }
   };
 
 const deleteOne = async (req, res, next) => {
     try {
       const { pid } = req.params;//Obtiene el parámetro de la ruta "pid" (product id)
-      const product = await productsServices.deleteOne(pid);//Obtiene el producto por id y lo elimina de la base de datos  
+      const product = await productsServices.deleteOne(pid, req.user);//Obtiene el producto por id junto con la información del user y lo elimina de la base de datos 
       res.status(200).json({
         status: "success",
         payload: `The product with id number: ${pid} has been successfully deleted.`,
       });//Responde con un mensaje de éxito
     } catch (error) {
-      next(error);//Continua el flujo al middleware de errors      });
+      next(error);//Continua el flujo al middleware de errors
     }
   };
 

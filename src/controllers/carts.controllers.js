@@ -15,7 +15,7 @@ const addProductToCart = async (req, res, next) => {
   try {
     const { cid, pid } = req.params; // Obtiene los parámetros de la ruta "cid"(cart id) y "pid" (product id)
 
-    const cart = await cartsServices.addProductToCart(cid, pid); //Recibe el id del carrito y del producto, y agrega el producto al carrito de la base de datos
+    const cart = await cartsServices.addProductToCart(cid, pid, req.user); //Recibe el id del carrito y del producto, y agrega el producto al carrito de la base de datos
 
     res.status(201).json({ status: "success", payload: cart }); // Responde con el carrito actualizado en la base de datos
   } catch (error) {

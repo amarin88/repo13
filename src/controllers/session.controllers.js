@@ -5,7 +5,7 @@ const register = async (req, res, next) => {
     try {
       return res
         .status(201)
-        .json({ status: "success", response: "User successfuly created" });//Responde con el usuario creado y el código de estado 201 (creado)
+        .json({ status: "success", response: "User successfully created" });//Responde con el usuario creado y el código de estado 201 (creado)
     } catch (error) {
       next(error);//Continua el flujo al middleware de errors
     }

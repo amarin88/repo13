@@ -1,22 +1,26 @@
 import productsRepository from "../persistences/mongo/repositories/products.repository.js";//Import para persistencia de productos
 import { productResponseDto } from "../dto/productResponse.dto.js";//Import de DTO de products
-import error from "../errors/customErrors.js"//Import config de errors
+import customErrors from "../errors/customErrors.js"//Import config de errors
 
 const getAll = async (query , options) =>{
     const products = await productsRepository.getAll(query, options);
-    if(!products) throw error.productNotFoundError();
+    if(!products) throw customErrors.productNotFoundError();
     return products;
 };//Función asyncrona para buscar todos los productos en la base de datos
 
 const getById = async ( id ) =>{
     const productData = await productsRepository.getById(id);
-    if(!productData) throw error.productNotFoundError();
+    if(!productData) throw customErrors.productNotFoundError();
     const product = productResponseDto(productData);
     return product;
 };//Función asyncrona para buscar productos en la base de datos por id
 
-const create = async (data) =>{
-    const product = await productsRepository.create(data);
+const create = async (data, user) =>{
+    let productData = data;
+    if(user.role === "premium"){// Verifica si el rol del usuario es "premium"
+        productData = {...data, owner: user._id};// Si el usuario es premium, agrega el campo 'owner' con el ID del usuario al objeto de datos del producto
+    };
+    const product = await productsRepository.create(productData);
     return product;
 };//Función asyncrona para agregar un producto a la base de datos
 
@@ -25,9 +29,13 @@ const update = async (id, data) =>{
     return product;
 };//Función asyncrona para actualizar un producto a la base de datos
 
-const deleteOne = async ( id ) =>{
+const deleteOne = async ( id, user ) =>{
+    const productData = await productsRepository.getById(id);
+    if(user.role === "premium" && productData.owner !== user._id){// Verifica si el usuario es "premium" y si no es el dueño del producto
+        throw customErrors.unauthorizedError("User not authorized");
+    }
     const product = await productsRepository.deleteOne(id);
-    if(!product) throw error.productNotFoundError();
+    if(!product) throw customErrors.productNotFoundError();
     return product;
 };//Función asyncrona para borrar un producto a la base de datos
 

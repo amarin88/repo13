@@ -12,11 +12,11 @@ router.get("/mockingproducts", productsController.createProductsMocks ); //Ruta 
 
 router.get("/:pid", productsController.getById);//Ruta para obtener un producto por su ID
 
-router.post("/", passportCall("jwt"), authorization("admin"), productDataValidator, productsController.create);//Ruta para agregar un nuevo producto
+router.post("/", passportCall("jwt"), authorization(["admin","premium"]), productDataValidator, productsController.create);//Ruta para agregar un nuevo producto. Requiere autenticación con JWT y autorización para usuarios con rol "admin" o "premium"
 
-router.put("/:pid", passportCall("jwt"), authorization("admin"), productsController.update);//Ruta para actualizar un producto existente
+router.put("/:pid", passportCall("jwt"), authorization(["admin","premium"]), productsController.update);//Ruta para actualizar un producto existente. Requiere autenticación con JWT y autorización para usuarios con rol "admin" o "premium"
 
-router.delete("/:pid", passportCall("jwt"), authorization("admin"), productsController.deleteOne); //Ruta para eliminar un producto por su ID
+router.delete("/:pid", passportCall("jwt"), authorization(["admin","premium"]), productsController.deleteOne); //Ruta para eliminar un producto por su ID. Requiere autenticación con JWT y autorización para usuarios con rol "admin" o "premium"
 
 
 export default router;//Export del router

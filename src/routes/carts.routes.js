@@ -9,14 +9,14 @@ router.post("/", passportCall("jwt"), authorization("user"), cartsController.cre
 
 router.get("/:cid", passportCall("jwt"), authorization("user"), cartsController.getCartById);// Ruta para obtener los productos de un carrito por su ID
 
-router.post("/:cid/product/:pid", passportCall("jwt"), authorization("user"), checkProductAndCart, cartsController.addProductToCart );// Ruta para agregar un producto a un carrito
+router.post("/:cid/product/:pid", passportCall("jwt"), authorization(["user","premium"]), checkProductAndCart, cartsController.addProductToCart );// Ruta para agregar un producto a un carrito. Requiere autenticación con JWT y autorización para usuarios con rol "user" o "premium"
 
-router.put("/:cid/product/:pid", passportCall("jwt"), authorization("user"), checkProductAndCart, cartsController.updateQuantityProductInCart);//Ruta para modificar la quantity del producto por parametro
+router.put("/:cid/product/:pid", passportCall("jwt"), authorization(["user","premium"]), checkProductAndCart, cartsController.updateQuantityProductInCart);//Ruta para modificar la quantity del producto por parametro. Requiere autenticación con JWT y autorización para usuarios con rol "user" o "premium"
 
-router.delete("/:cid/product/:pid", passportCall("jwt"), authorization("user"), checkProductAndCart, cartsController.deleteProductInCart);//Ruta para borrar un producto del carrito por ID
+router.delete("/:cid/product/:pid", passportCall("jwt"), authorization(["user","premium"]), checkProductAndCart, cartsController.deleteProductInCart);//Ruta para borrar un producto del carrito por ID. Requiere autenticación con JWT y autorización para usuarios con rol "user" o "premium"
 
-router.delete("/:cid", passportCall("jwt"), authorization("user"), cartsController.deleteAllProductsInCart);//Ruta para vaciar el carrito por ID
+router.delete("/:cid", passportCall("jwt"), authorization(["user","premium"]), cartsController.deleteAllProductsInCart);//Ruta para vaciar el carrito por ID. Requiere autenticación con JWT y autorización para usuarios con rol "user" o "premium"
 
-router.get("/:cid/purchase", passportCall("jwt"), authorization("user"), cartsController.purchaseCart );//Ruta para 
+router.get("/:cid/purchase", passportCall("jwt"), authorization(["user","premium"]), cartsController.purchaseCart );//Ruta para realizar la compra del carrito. Requiere autenticación con JWT y autorización para usuarios con rol "user" o "premium"
 
 export default router;//Export el router
